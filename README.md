@@ -1,84 +1,123 @@
-local player = game.Players.LocalPlayer
-local mouse = player:GetMouse()
+-- Gui Principal criada por script (MainGui)
+local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
+ScreenGui.Name = "MainGui"
+ScreenGui.Enabled = false
 
--- Referências da GUI
-local gui = player.PlayerGui:WaitForChild("MainGUI") -- Nome da sua GUI
-local correrButton = gui:WaitForChild("CorrerButton")
-local teleportButton = gui:WaitForChild("TeleportButton")
-local applyStyleButton = gui:WaitForChild("ApplyStyleButton")
-local styleTextBox = gui:WaitForChild("StyleTextBox")
+local frame = Instance.new("Frame", ScreenGui)
+frame.Size = UDim2.new(0, 200, 0, 180)
+frame.Position = UDim2.new(0, 10, 0, 150)
+frame.BackgroundColor3 = Color3.new(0, 0, 0.2)
 
--- Função para correr mais rápido
-local function correrRapido()
-    -- Supondo que o personagem tenha um "Humanoid" com a propriedade "WalkSpeed"
-    local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
-    if humanoid then
-        humanoid.WalkSpeed = 100  -- Aumente a velocidade conforme necessário
-    end
-end
+local title = Instance.new("TextLabel", frame)
+title.Text = "O Mior"
+title.Size = UDim2.new(1, 0, 0, 30)
+title.BackgroundColor3 = Color3.new(0.1, 0.1, 0.4)
+title.TextColor3 = Color3.new(1, 1, 1)
 
--- Função para se teleportar para a bola no Blue Lock Rivals
-local function teleportarParaBola()
-    -- Encontrar a bola no jogo
-    local bola = workspace:FindFirstChild("Bola") -- Nome da bola no jogo
-    if bola then
-        player.Character:SetPrimaryPartCFrame(bola.CFrame)
-    end
-end
+local correrBtn = Instance.new("TextButton", frame)
+correrBtn.Text = "Correr + Rápido"
+correrBtn.Size = UDim2.new(1, -20, 0, 30)
+correrBtn.Position = UDim2.new(0, 10, 0, 40)
+correrBtn.BackgroundColor3 = Color3.new(0, 0.5, 1)
+correrBtn.TextColor3 = Color3.new(1, 1, 1)
 
--- Função para aplicar o estilo
-local function aplicarEstilo()
-    local nomeEstilo = styleTextBox.Text
-    local estilosValidos = {
-        "Kaiser",
-        "Sae",
-        "Shidou",
-        "Rin",
-        "Bachira",
-        "Nagi",
-        "Kunigami",
-        "Reo",
-        "Karasu",
-        "Otoya",
-        "Gagamaru",
-        "Don Lorenzo",
-        "King",
-        "Yukimiya",
-        "Isagi",
-        "NEL Isagi",
-        "NEL Bachira"
-    }
+local tpBtn = Instance.new("TextButton", frame)
+tpBtn.Text = "TP pra Bola"
+tpBtn.Size = UDim2.new(1, -20, 0, 30)
+tpBtn.Position = UDim2.new(0, 10, 0, 80)
+tpBtn.BackgroundColor3 = Color3.new(0, 0.5, 1)
+tpBtn.TextColor3 = Color3.new(1, 1, 1)
 
-    -- Verificar se o nome digitado é um estilo válido
-    for _, estilo in ipairs(estilosValidos) do
-        if string.lower(nomeEstilo) == string.lower(estilo) then
-            -- Aqui você deve chamar o RemoteEvent para aplicar o estilo no servidor
-            -- Exemplo: game.ReplicatedStorage.Remotes.SetStyle:FireServer(estilo)
-            print("Estilo aplicado: " .. estilo)
-            return
-        end
-    end
+local estiloBox = Instance.new("TextBox", frame)
+estiloBox.PlaceholderText = "Nome do estilo"
+estiloBox.Size = UDim2.new(1, -20, 0, 30)
+estiloBox.Position = UDim2.new(0, 10, 0, 120)
+estiloBox.BackgroundColor3 = Color3.new(1, 1, 1)
+estiloBox.TextColor3 = Color3.new(0, 0, 0)
 
-    print("Estilo inválido!")
-end
+-- Toggle de visibilidade
+local toggleBtn = Instance.new("TextButton", ScreenGui)
+toggleBtn.Text = "Mostrar/Esconder GUI"
+toggleBtn.Size = UDim2.new(0, 160, 0, 30)
+toggleBtn.Position = UDim2.new(0, 10, 0, 340)
+toggleBtn.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+toggleBtn.TextColor3 = Color3.new(1, 1, 1)
 
--- Eventos de clique nos botões
-correrButton.MouseButton1Click:Connect(correrRapido)
-teleportButton.MouseButton1Click:Connect(teleportarParaBola)
-applyStyleButton.MouseButton1Click:Connect(aplicarEstilo)
-
--- Criar um botão para esconder/exibir a GUI
-local toggleButton = Instance.new("TextButton")
-toggleButton.Size = UDim2.new(0, 100, 0, 50)
-toggleButton.Position = UDim2.new(0, 0, 1, -60)
-toggleButton.Text = "Toggle GUI"
-toggleButton.Parent = gui
-
-local guiVisible = true
-toggleButton.MouseButton1Click:Connect(function()
-    guiVisible = not guiVisible
-    gui.Visible = guiVisible
+toggleBtn.MouseButton1Click:Connect(function()
+    frame.Visible = not frame.Visible
 end)
 
--- Inicialização
-gui.Visible = false  -- Começar com a GUI invisível
+-- Key GUI
+local keyGui = Instance.new("ScreenGui", game.CoreGui)
+local keyFrame = Instance.new("Frame", keyGui)
+keyFrame.Size = UDim2.new(0, 240, 0, 180)
+keyFrame.Position = UDim2.new(0.5, -120, 0.5, -90)
+keyFrame.BackgroundColor3 = Color3.new(0.1, 0.1, 0.1)
+
+local keyBox = Instance.new("TextBox", keyFrame)
+keyBox.PlaceholderText = "Insira a Key"
+keyBox.Size = UDim2.new(0.8, 0, 0, 30)
+keyBox.Position = UDim2.new(0.1, 0, 0.1, 0)
+
+local aviso = Instance.new("TextLabel", keyFrame)
+aviso.Text = ""
+aviso.Size = UDim2.new(1, -20, 0, 20)
+aviso.Position = UDim2.new(0, 10, 0.35, 0)
+aviso.TextColor3 = Color3.new(1, 1, 1)
+aviso.BackgroundTransparency = 1
+
+local copyButton = Instance.new("TextButton", keyFrame)
+copyButton.Text = "Copiar o link"
+copyButton.Size = UDim2.new(0.8, 0, 0, 30)
+copyButton.Position = UDim2.new(0.1, 0, 0.5, 0)
+
+copyButton.MouseButton1Click:Connect(function()
+    setclipboard("https://linktr.ee/ryangamer7")
+    aviso.Text = "Link copiado!"
+end)
+
+local confirmButton = Instance.new("TextButton", keyFrame)
+confirmButton.Text = "Confirmar"
+confirmButton.Size = UDim2.new(0.8, 0, 0, 30)
+confirmButton.Position = UDim2.new(0.1, 0, 0.7, 0)
+
+-- Verificação automática de Key diária
+confirmButton.MouseButton1Click:Connect(function()
+    local dataHoje = os.date("%d%m%Y")
+    if keyBox.Text == dataHoje then
+        keyGui:Destroy()
+        ScreenGui.Enabled = true
+    else
+        aviso.Text = "Key incorreta! Pegue no link."
+    end
+end)
+
+-- Botão de correr (velocidade global)
+correrBtn.MouseButton1Click:Connect(function()
+    local char = game.Players.LocalPlayer.Character
+    if char and char:FindFirstChild("Humanoid") then
+        char.Humanoid.WalkSpeed = 100
+    end
+end)
+
+-- Botão de teleportar pra bola
+tpBtn.MouseButton1Click:Connect(function()
+    local bola = workspace:FindFirstChild("Football") or workspace:FindFirstChildWhichIsA("Part", true, function(part)
+        return part.Name:lower():find("ball")
+    end)
+    if bola then
+        local char = game.Players.LocalPlayer.Character
+        if char and char:FindFirstChild("HumanoidRootPart") then
+            char.HumanoidRootPart.CFrame = bola.CFrame + Vector3.new(0, 3, 0)
+        end
+    end
+end)
+
+-- Campo de estilo (simula estilo do jogador)
+estiloBox.FocusLost:Connect(function()
+    local estilo = estiloBox.Text:lower()
+    if estilo ~= "" then
+        print("Estilo ativado:", estilo)
+        -- Aqui você pode adicionar lógica para cada estilo específico se quiser
+    end
+end)
