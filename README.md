@@ -51,10 +51,11 @@ btnConfirmar.TextSize = 16
 
 btnConfirmar.MouseButton1Click:Connect(function()
     if inputBox.Text == keyCorreta then
-        guiKey:Destroy()
+        guiKey:Destroy() -- Remove a GUI da Key
         gui.Enabled = true -- Mostra a GUI principal
     else
-        inputBox.Text = "Key incorreta!"
+        inputBox.Text = "Key incorreta! Tente novamente."
+        inputBox.TextColor3 = Color3.fromRGB(255, 0, 0) -- Altera a cor do texto para vermelho
     end
 end)
 
