@@ -1,4 +1,16 @@
--- Gui Principal criada por script (MainGui)
+-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- RemoteEvent de estilo
+local remoteEstilo = ReplicatedStorage:FindFirstChild("MudarEstilo")
+if not remoteEstilo then
+    remoteEstilo = Instance.new("RemoteEvent")
+    remoteEstilo.Name = "MudarEstilo"
+    remoteEstilo.Parent = ReplicatedStorage
+end
+
+-- GUI Principal
 local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
 ScreenGui.Name = "MainGui"
 ScreenGui.Enabled = false
@@ -7,6 +19,8 @@ local frame = Instance.new("Frame", ScreenGui)
 frame.Size = UDim2.new(0, 200, 0, 180)
 frame.Position = UDim2.new(0, 10, 0, 150)
 frame.BackgroundColor3 = Color3.new(0, 0, 0.2)
+frame.Active = true
+frame.Draggable = true
 
 local title = Instance.new("TextLabel", frame)
 title.Text = "O Mior"
@@ -35,7 +49,7 @@ estiloBox.Position = UDim2.new(0, 10, 0, 120)
 estiloBox.BackgroundColor3 = Color3.new(1, 1, 1)
 estiloBox.TextColor3 = Color3.new(0, 0, 0)
 
--- Toggle de visibilidade
+-- Toggle visibilidade da GUI
 local toggleBtn = Instance.new("TextButton", ScreenGui)
 toggleBtn.Text = "Mostrar/Esconder GUI"
 toggleBtn.Size = UDim2.new(0, 160, 0, 30)
@@ -47,7 +61,7 @@ toggleBtn.MouseButton1Click:Connect(function()
     frame.Visible = not frame.Visible
 end)
 
--- Key GUI
+-- GUI de Key
 local keyGui = Instance.new("ScreenGui", game.CoreGui)
 local keyFrame = Instance.new("Frame", keyGui)
 keyFrame.Size = UDim2.new(0, 240, 0, 180)
@@ -81,7 +95,6 @@ confirmButton.Text = "Confirmar"
 confirmButton.Size = UDim2.new(0.8, 0, 0, 30)
 confirmButton.Position = UDim2.new(0.1, 0, 0.7, 0)
 
--- Verificação automática de Key diária
 confirmButton.MouseButton1Click:Connect(function()
     local dataHoje = os.date("%d%m%Y")
     if keyBox.Text == dataHoje then
@@ -92,9 +105,9 @@ confirmButton.MouseButton1Click:Connect(function()
     end
 end)
 
--- Botão de correr (velocidade global)
+-- Botão de correr mais rápido
 correrBtn.MouseButton1Click:Connect(function()
-    local char = game.Players.LocalPlayer.Character
+    local char = Players.LocalPlayer.Character
     if char and char:FindFirstChild("Humanoid") then
         char.Humanoid.WalkSpeed = 100
     end
@@ -106,18 +119,17 @@ tpBtn.MouseButton1Click:Connect(function()
         return part.Name:lower():find("ball")
     end)
     if bola then
-        local char = game.Players.LocalPlayer.Character
+        local char = Players.LocalPlayer.Character
         if char and char:FindFirstChild("HumanoidRootPart") then
             char.HumanoidRootPart.CFrame = bola.CFrame + Vector3.new(0, 3, 0)
         end
     end
 end)
 
--- Campo de estilo (simula estilo do jogador)
+-- Estilo: envia para o RemoteEvent
 estiloBox.FocusLost:Connect(function()
-    local estilo = estiloBox.Text:lower()
+    local estilo = estiloBox.Text
     if estilo ~= "" then
-        print("Estilo ativado:", estilo)
-        -- Aqui você pode adicionar lógica para cada estilo específico se quiser
+        remoteEstilo:FireServer(estilo)
     end
 end)
